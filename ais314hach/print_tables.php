@@ -41,38 +41,34 @@
       };
 
       echo "
-      <hr>
+      <hr>      
       <table cellspacing='0' cellpadding='10' >";
 
       $arr = $obj->getColumns();
       
       echo "
       <tr bgcolor='$color'>";
-      
+      echo "<td></td>\r\n";
       foreach ($arr as $caption => $name) {
          echo "<td>".$caption."</td>\r\n";
       };
 
       for( $i = 0; $i < mysql_num_rows($result); $i++ )
       {
-	      $id = mysql_result($result, $i, "id");
-	      $fio = mysql_result($result, $i, "fio");
-	      $stsm = mysql_result($result, $i, "stsm");
-
 	      if( $i % 2 == 0 ) $color = $color1; else $color = $color2;
-         if($stsm == 1) $stsm = "да"; else $stsm = "нет";
          
          echo "
 	      <tr bgcolor='$color'>\r\n";
-	      
+   	      echo "<td>look</td>\r\n";
 	      foreach ($arr as $caption => $name) {
 	         $data = mysql_result($result, $i, $name);
 	         $data = $obj->convertToPrintData($name, $data);
             echo "<td>".$data."</td>\r\n";
-         };
+         };      
 	      echo "</tr>\r\n";
       }
       
-      echo "</table>";
+      echo "</table><br/>
+      <a href=''>add record</a>";
    };
 ?>
