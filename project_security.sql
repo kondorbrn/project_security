@@ -37,41 +37,10 @@ CREATE TABLE IF NOT EXISTS `criminal` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `log_of_offenses`
---
-
-CREATE TABLE IF NOT EXISTS `log_of_offenses` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` datetime NOT NULL,
-  `id_stsm` int(11) NOT NULL,
-  `id_personal` int(11) NOT NULL,
-  `id_offense` int(11) NOT NULL,
-  `text` text NOT NULL,
-  `scan` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `m2m`
---
-
-CREATE TABLE IF NOT EXISTS `m2m` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_log` int(11) NOT NULL,
-  `id_criminal` int(11) NOT NULL,
-  `resolution` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `offense`
 --
 
-CREATE TABLE IF NOT EXISTS `offense` (
+CREATE TABLE IF NOT EXISTS `type_of_offense` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -89,6 +58,41 @@ CREATE TABLE IF NOT EXISTS `personal` (
   `stsm` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+--
+-- Структура таблицы `log_of_offenses`
+--
+
+CREATE TABLE IF NOT EXISTS `log_of_offenses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` datetime NOT NULL,
+  `id_stsm` int(11) NOT NULL,
+  `id_personal` int(11) NOT NULL,
+  `id_type_of_offense` int(11) NOT NULL,
+  `text` text NOT NULL,
+  `scan` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT FOREIGN KEY ( `id_personal` ) REFERENCES personal( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY ( `id_stsm` ) REFERENCES personal( id ) ON DELETE CASCADE ON UPDATE CASCADE, 
+  CONSTRAINT FOREIGN KEY ( `id_type_of_offense` ) REFERENCES type_of_offense( id ) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `m2m`
+--
+
+CREATE TABLE IF NOT EXISTS `participants_of_criminal` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_log_of_offenses` int(11) NOT NULL,
+  `id_criminal` int(11) NOT NULL,
+  `resolution` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT FOREIGN KEY ( `id_log_of_offenses` ) REFERENCES log_of_offenses( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FOREIGN KEY ( `id_criminal` ) REFERENCES criminal( id ) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
