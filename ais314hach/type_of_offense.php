@@ -1,6 +1,6 @@
 <? error_reporting(E_ALL); ?>
 <?	
-   class offense
+   class type_of_offense
    {
       function createSQL($find, $count = false)
       {
@@ -8,12 +8,12 @@
 		   if($count)
 			   $fields = "COUNT(*) as count_rec";
 
-         return "select ".$fields." from offense t0 where type like '%%".$find."%%'";    
+         return "select ".$fields." from type_of_offense t0 where type like '%%".$find."%%'";    
       }
 
-  	function getCaption()
+  		function getCaption()
 		{
-			return "Offenses";
+			return "Type of Offenses";
 		}      
       function getColumns()
       {

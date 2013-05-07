@@ -38,8 +38,8 @@ function SetCaretAtEnd(elem) {
 	include_once "basepage.php";
 	include_once "config.php";
 	include_once "bbcode.php";
-    include_once "print_tables.php";
-	// include_once "create_objects.php";
+	include_once "print_tables.php";
+	include_once "create_objects.php";
 
 	$db = mysql_connect( $db_host, $db_username, $db_userpass);
 	mysql_select_db( $db_namedb, $db);
@@ -47,7 +47,6 @@ function SetCaretAtEnd(elem) {
 	$find = "";
 	$page = 0;
 
-	
 	if( isset($_GET["find"]) )
 		$find = htmlspecialchars($_GET["find"]);
 
@@ -55,52 +54,50 @@ function SetCaretAtEnd(elem) {
 		$page = htmlspecialchars($_GET["page"]);
 
 	$objs = create_objects();
-	echo_header($objs, $find);
-	
-	
-	/*foreach ($objs as $name => $obj) 
+
+	if( isset($_GET["insert"]) )
 	{
-		if(isset($_GET[$name])) 
+		foreach ($objs as $name => $obj)
 		{
-			print_header($name, $obj->getCaption(), $find);
+			if(isset($_GET[$name]))
+			{
+				$obj->insert();
+				//echo_header($objs, $name, $find);
+				//echo_tabl($obj, $find, $page);
+				//echo_addform($obj);
+				exit(0);
+				refreshTo("index.php?".$obj->getName()."=&find=".$find);
+			}
+		};	
+		
+	}
+		
+	$find_page = false;
+	$fisrt_name = "";
+	foreach ($objs as $name => $obj)
+	{
+		if(strlen($fisrt_name) == 0)
+			$fisrt_name = $name;
+		//echo $name."<br>";
+		if(isset($_GET[$name]))
+		{
+			echo_header($objs, $name, $find);
 			echo_tabl($obj, $find, $page);
+			echo_addform($obj, $find);
+			$find_page = true;
 		}
-    };*/
-	  
-   if( isset($_GET["personal"]) )
+	};
+   
+   if($find_page == false && strlen($fisrt_name) == 0)
    {
-      print_header("personal", "Personals", $find);
-      include_once "personal.php";
-      $obj = new personal();
-      echo_tabl($obj, $find, $page);
-   }
-   else if( isset($_GET["offense"]) )
-   {
-      print_header("offense", "Offenses", $find);
-      include_once "offense.php";
-      $obj = new offense();
-      echo_tabl($obj, $find, $page);
-   }
-   else if( isset($_GET["criminal"]) )
-   {
-      print_header("criminal", "Criminals", $find);
-      include_once "criminal.php";
-      $obj = new criminal();
-      echo_tabl($obj, $find, $page);
-   }
-   else if( isset($_GET["log_of_offense"]) )
-   {
-      print_header("log_of_offense", "Log of Offenses", $find);
-      include_once "log_of_offense.php";
-      $obj = new log_of_offense();
-      echo_tabl($obj, $find, $page);
-   }
-   else
-   {
-      print_header("", "Main page");
+   	echo "sorry, not found pages...";
+   	exit(0);
    }
    
-   
+   		
+	if($find_page == false && strlen($fisrt_name) != 0)
+		refreshTo("index.php?".$fisrt_name);
+		
    
 	/*if( isset( $_POST["addnewfilm"] ) )
 	{
@@ -150,7 +147,7 @@ function SetCaretAtEnd(elem) {
 ";
 */
 
-	$query = createQueryForFind($find, true);
+/*	$query = createQueryForFind($find, true);
 
 	$result = mysql_query( $query );
 	$count_all_films = mysql_result($result, 0, "count_films");
@@ -165,7 +162,7 @@ function SetCaretAtEnd(elem) {
 //	echo "[start: $start_record count: $end_record ]";
 
 	$query = createQueryForFind($find)." ORDER BY id_film DESC LIMIT $start_record,$end_record;";
-
+*/
 
 /*
 	$result = mysql_query( $query );

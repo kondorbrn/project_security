@@ -11,7 +11,7 @@
          return "select ".$fields." from log_of_offenses t0
             inner join personal t1 on t1.id = t0.id_stsm
             inner join personal t2 on t2.id = t0.id_personal
-            inner join offense t3 on t3.id = t0.id_offense
+            inner join type_of_offense t3 on t3.id = t0.id_type_of_offense
           where 
             t0.text like '%%".$find."%%'
             or t1.fio like '%%".$find."%%'
@@ -20,7 +20,7 @@
             ";
       }
 
-  	function getCaption()
+  		function getCaption()
 		{
 			return "Log Of Offences";
 		}
@@ -41,7 +41,7 @@
       {
          if($name == "scan")
          {
-            return "<img src='' width=50px />"; 
+            return "<img src='$data' width=50px />"; 
          }
          return $data;
       }

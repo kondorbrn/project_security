@@ -10,8 +10,8 @@
       mysql_set_charset("utf8");
       	      
       $result = mysql_query( $obj->createSQL($find, true) );
-      $count_all_films = mysql_result($result, 0, "count_rec");
-
+      $count_all = mysql_result($result, 0, "count_rec");
+			
       $start_record = $page * 10;
       $end_record = 10;
       //	echo "[start: $start_record count: $end_record ]";
@@ -27,7 +27,7 @@
 
       echo "
       <hr>
-      found ($count_all_films); pages:
+      found ($count_all); pages:
       ";
 
       $count_pages = $count_all_films / 10;
@@ -49,6 +49,7 @@
       echo "
       <tr bgcolor='$color'>";
       echo "<td></td>\r\n";
+      echo "<td></td>\r\n";
       foreach ($arr as $caption => $name) {
          echo "<td>".$caption."</td>\r\n";
       };
@@ -60,6 +61,7 @@
          echo "
 	      <tr bgcolor='$color'>\r\n";
    	      echo "<td>look</td>\r\n";
+   	      echo "<td>delete</td>\r\n";
 	      foreach ($arr as $caption => $name) {
 	         $data = mysql_result($result, $i, $name);
 	         $data = $obj->convertToPrintData($name, $data);
@@ -68,17 +70,69 @@
 	      echo "</tr>\r\n";
       }
       
-      echo "</table><br/>
-      <a href=''>add record</a>";
-   };
+      echo "</table><br/>";
+
+      if($count_all == 0)
+			echo "Not found records<br><br>";
+   }
+   
+   function echo_addform($obj, $find)
+   {
+   	$arr = $obj->getColumns_Insert();
+   	
+   	echo " <br/><hr/><br/>
+      <form action='index.php?".$obj->getName()."=&insert=&find=".$find."' name='insert_".$obj->getName()."' method='POST'>
+      <input type='hidden' name='".$name."' value=''/>
+      <table width='50%'>";
+      
+      foreach ($arr as $caption => $name) {
+      	echo "
+	      <tr>
+		      <td align='right' width=50%>".$caption."</td>
+		      <td align='left' width=50%>".$obj->createInputTag($name, $value = "")."</td>
+	      </tr>
+	      	";           
+         };      
+      echo "</tr>\r\n";
+     
+      echo "	      
+	      <tr>
+		      <td colspan=2><br><center><input type='submit' value='Insert'/></center></td>
+	      </tr>	      
+
+      </table>
+      </form>";
+   }
    
    function echo_record($obj, $find, $page)
    {
 		
    }
    
-   function echo_header($objs, $find)
-   {
-		
-   };
+   function echo_header($objs, $name, $find)
+	{	
+	   echo "Project Security<br/><br/> | ";	   
+	   foreach ($objs as $name1 => $obj)
+		{
+			//echo $name."<br>";
+			if($name1 != $name)
+				echo "<a href='index.php?".$name1."'>".$obj->getCaption()."</a> | ";
+			else
+				echo $obj->getCaption()." | ";
+		};
+ 
+      echo "<br>
+      <br>
+      <form action='index.php' name='form_search' method='GET'>
+      <input type='hidden' name='".$name."' value=''/>
+      <table>
+	      <tr>
+		      <td>Find:</td>
+		      <td><input type='text' name='find' value='$find' size=100/></td>
+		      <td><input type='submit' value='FIND'/></td>
+	      </tr>
+
+      </table>
+      </form>";
+	};
 ?>
