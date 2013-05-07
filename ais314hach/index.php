@@ -38,7 +38,8 @@ function SetCaretAtEnd(elem) {
 	include_once "basepage.php";
 	include_once "config.php";
 	include_once "bbcode.php";
-   include_once "print_tables.php";
+    include_once "print_tables.php";
+	// include_once "create_objects.php";
 
 	$db = mysql_connect( $db_host, $db_username, $db_userpass);
 	mysql_select_db( $db_namedb, $db);
@@ -46,12 +47,26 @@ function SetCaretAtEnd(elem) {
 	$find = "";
 	$page = 0;
 
+	
 	if( isset($_GET["find"]) )
 		$find = htmlspecialchars($_GET["find"]);
 
 	if( isset($_GET["page"]) )
 		$page = htmlspecialchars($_GET["page"]);
-		   
+
+	$objs = create_objects();
+	echo_header($objs, $find);
+	
+	
+	/*foreach ($objs as $name => $obj) 
+	{
+		if(isset($_GET[$name])) 
+		{
+			print_header($name, $obj->getCaption(), $find);
+			echo_tabl($obj, $find, $page);
+		}
+    };*/
+	  
    if( isset($_GET["personal"]) )
    {
       print_header("personal", "Personals", $find);

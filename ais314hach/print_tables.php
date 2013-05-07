@@ -71,4 +71,14 @@
       echo "</table><br/>
       <a href=''>add record</a>";
    };
+   
+   function echo_record($obj, $find, $page)
+   {
+		
+   }
+   
+   function echo_header($objs, $find)
+   {
+		
+   };
 ?>

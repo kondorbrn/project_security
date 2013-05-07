@@ -10,7 +10,11 @@
 
          return "select ".$fields." from offense t0 where type like '%%".$find."%%'";    
       }
-      
+
+  	function getCaption()
+		{
+			return "Offenses";
+		}      
       function getColumns()
       {
          $arr = array();

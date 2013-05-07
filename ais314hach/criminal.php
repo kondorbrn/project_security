@@ -10,7 +10,12 @@
 
          return "select ".$fields." from criminal t0 where fio like '%%".$find."%%'";    
       }
-      
+
+     	function getCaption()
+		  {
+        return "Criminals";
+  		}
+     
       function getColumns()
       {
          $arr = array();
