@@ -3,6 +3,12 @@
 <head>
 <title> Project Security </title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+
+	<style type="text/css">
+		.notfirst:hover {
+			 background-color: red;
+		}
+	</style>	    
 </head>
 
 <script>
@@ -55,50 +61,52 @@ function SetCaretAtEnd(elem) {
 
 	$objs = create_objects();
 
-	if( isset($_GET["insert"]) )
-	{
-		foreach ($objs as $name => $obj)
-		{
-			if(isset($_GET[$name]))
-			{
-				$obj->insert();
-				//echo_header($objs, $name, $find);
-				//echo_tabl($obj, $find, $page);
-				//echo_addform($obj);
-				exit(0);
-				refreshTo("index.php?".$obj->getName()."=&find=".$find);
-			}
-		};	
-		
-	}
-		
-	$find_page = false;
-	$fisrt_name = "";
-	foreach ($objs as $name => $obj)
-	{
-		if(strlen($fisrt_name) == 0)
-			$fisrt_name = $name;
-		//echo $name."<br>";
-		if(isset($_GET[$name]))
-		{
-			echo_header($objs, $name, $find);
-			echo_tabl($obj, $find, $page);
-			echo_addform($obj, $find);
-			$find_page = true;
-		}
-	};
-   
-   if($find_page == false && strlen($fisrt_name) == 0)
+   if(count($objs) == 0)
    {
    	echo "sorry, not found pages...";
    	exit(0);
-   }
+   };
+
+	$selected_name = "";
+	$selected_obj = "";
+	$fisrt_page = "";
+	
+	foreach ($objs as $name => $obj)
+	{
+		if(strlen($fisrt_page) == 0)
+			$fisrt_page = $name;
+		//echo $name."<br>";
+		if(isset($_GET[$name]))
+		{
+			$selected_name = $name;
+			$selected_obj = $obj;
+			break;
+		}
+	};
+	
+	if(strlen($selected_name) == 0)
+		refreshTo("index.php?".$fisrt_page);
+	
+	if( isset($_GET["insert"]) )
+	{
+		$selected_obj->insert();
+		refreshTo("index.php?".$selected_obj->getName()."=");
+	}
    
-   		
-	if($find_page == false && strlen($fisrt_name) != 0)
-		refreshTo("index.php?".$fisrt_name);
-		
    
+   
+	if( isset($_GET["view"]) )
+	{
+		echo_title_page("Viewer");
+		$selected_obj->view();
+	}
+	else
+	{	
+		echo_header($objs, $selected_name, $find);
+		echo_tabl($selected_obj, $find, $page);
+		echo_addform($selected_obj);
+	}
+  
 	/*if( isset( $_POST["addnewfilm"] ) )
 	{
 		$name_orig = htmlspecialchars(addslashes($_POST["name_orig"]));

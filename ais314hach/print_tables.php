@@ -3,7 +3,7 @@
 	include_once "config.php";
 	include_once "bbcode.php";
 	
-   function echo_tabl($obj, $find, $page)
+   function echo_tabl($obj, $find, $page = 0)
    {      
       $db = mysql_connect( $db_host, $db_username, $db_userpass);
    	mysql_select_db( $db_namedb, $db);
@@ -18,7 +18,7 @@
    
       $query = $obj->createSQL($find)." ORDER BY t0.id DESC LIMIT $start_record,$end_record;";
       
-      echo $query;
+      // echo $query;
       $result = mysql_query( $query );
       
       $color = "";
@@ -30,14 +30,14 @@
       found ($count_all); pages:
       ";
 
-      $count_pages = $count_all_films / 10;
+      $count_pages = $count_all / 10;
 
       for( $i = 0; $i < $count_pages; $i++)
       {
 	      if( $page == $i )
 		      echo "<font size=5>(".($i+1).")</font>, ";
 	      else
-		      echo "<a href='index.php?page=".$i."&find=$find'>(".($i+1).")</a>, ";
+		      echo "<a href='index.php?".$obj->getName()."=&find=".$find."&page=".$i."&find=$find'>(".($i+1).")</a>, ";
       };
 
       echo "
@@ -48,25 +48,22 @@
       
       echo "
       <tr bgcolor='$color'>";
-      echo "<td></td>\r\n";
-      echo "<td></td>\r\n";
+      
       foreach ($arr as $caption => $name) {
          echo "<td>".$caption."</td>\r\n";
       };
-
+	
       for( $i = 0; $i < mysql_num_rows($result); $i++ )
       {
 	      if( $i % 2 == 0 ) $color = $color1; else $color = $color2;
-         
+         $id = mysql_result($result, $i, "id");
          echo "
-	      <tr bgcolor='$color'>\r\n";
-   	      echo "<td>look</td>\r\n";
-   	      echo "<td>delete</td>\r\n";
+	      <tr class='notfirst' onclick=\"document.location = 'index.php?".$obj->getName()."=&view=".$id."';\" bgcolor='$color'>\r\n";
 	      foreach ($arr as $caption => $name) {
 	         $data = mysql_result($result, $i, $name);
 	         $data = $obj->convertToPrintData($name, $data);
-            echo "<td>".$data."</td>\r\n";
-         };      
+            echo "<td><center>".$data."</center></td>\r\n";
+         };          
 	      echo "</tr>\r\n";
       }
       
@@ -78,9 +75,10 @@
    
    function echo_addform($obj, $find)
    {
+   	
    	$arr = $obj->getColumns_Insert();
    	
-   	echo " <br/><hr/><br/>
+   	echo "<br/><hr/><br/>
       <form action='index.php?".$obj->getName()."=&insert=&find=".$find."' name='insert_".$obj->getName()."' method='POST'>
       <input type='hidden' name='".$name."' value=''/>
       <table width='50%'>";
@@ -109,9 +107,20 @@
 		
    }
    
+   function echo_title_page($name = "")
+   {
+	   echo "Project Security";
+   	if($name != "")
+   		echo " (".$name.")";
+   	
+   	echo "<br/><br/>";
+   
+   }
+   
    function echo_header($objs, $name, $find)
 	{	
-	   echo "Project Security<br/><br/> | ";	   
+		echo_title_page("Search");
+	   echo "| ";	   
 	   foreach ($objs as $name1 => $obj)
 		{
 			//echo $name."<br>";

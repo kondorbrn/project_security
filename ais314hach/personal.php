@@ -39,12 +39,6 @@
 			$arr['Старший смены'] = 'stsm';
 			return $arr; 
 		}
-      
-      function extendedColumns($id)
-      {
-			if($id != "")
-				echo "<a href='personal&delete'><img src='images/'></a>";			
-      };
 
       function getColumns_Insert()
       {
@@ -55,13 +49,13 @@
       
       function insert()
       {
+   	   mysql_set_charset("utf8");
+      
 			$fio = $_POST['fio'];
 			$stsm = $_POST['stsm'];
 			$stsm = ($stsm == "on" ? 1 : 0);
 			$query = "insert into personal(fio,stsm) values('$fio', $stsm)";
-			$result = mysql_query( $query );			
-			echo "[fio:".$fio."][stsm:".$stsm."]";
-			
+			$result = mysql_query( $query ) or die("cann't insert");
       }
 
 		function convertToPrintData($name, $data)
