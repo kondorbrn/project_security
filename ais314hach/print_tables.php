@@ -79,7 +79,7 @@
    	$arr = $obj->getColumns_Insert();
    	
    	echo "<br/><hr/><br/>
-      <form action='index.php?".$obj->getName()."=&insert=&find=".$find."' name='insert_".$obj->getName()."' method='POST'>
+      <form action='index.php?".$obj->getName()."=&insert=&find=".$find."' name='insert_".$obj->getName()."' method='POST' enctype='multipart/form-data'>
       <input type='hidden' name='".$name."' value=''/>
       <table width='50%'>";
       

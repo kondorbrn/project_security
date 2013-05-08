@@ -28,7 +28,6 @@
 				return "<input type='checkbox' name='$name'/><br>";
 			else 
 				return "I don't know, what are you want!";
-
 		}
 		
 		function getColumns()
@@ -40,18 +39,18 @@
 			return $arr; 
 		}
 
-      function getColumns_Insert()
-      {
-      	$arr = $this->getColumns();
-      	unset($arr['id']);
-      	return $arr;
-      }
+		function getColumns_Insert()
+		{
+			$arr = $this->getColumns();
+			unset($arr['id']);
+			return $arr;
+		}
       
       function insert()
       {
-   	   mysql_set_charset("utf8");
+			mysql_set_charset("utf8");
       
-			$fio = $_POST['fio'];
+			$fio = htmlspecialchars($_POST['fio']);
 			$stsm = $_POST['stsm'];
 			$stsm = ($stsm == "on" ? 1 : 0);
 			$query = "insert into personal(fio,stsm) values('$fio', $stsm)";
