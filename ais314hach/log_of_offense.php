@@ -7,7 +7,7 @@
 		   $fields = "*";
 		   if($count)
 			   $fields = "COUNT(*) as count_rec";
-			else $fields."*, 
+			else $fields = "*, 
 				t1.fio as fio_stsm, 
 				t2.fio as fio_personal, 
 				t3.type as str_type_of_offense";
@@ -18,15 +18,15 @@
             inner join type_of_offense t3 on t3.id = t0.id_type_of_offense
           where 
             t0.text like '%%".$find."%%'
-            or fio_stsm like '%%".$find."%%'
-            or fio_personal like '%%".$find."%%'
-            or str_type_of_offense like '%%".$find."%%'
+            or t1.fio like '%%".$find."%%'
+            or t2.fio like '%%".$find."%%'
+            or t3.type like '%%".$find."%%'
             ";
       }
 
 		function getName()
 		{
-			return "log_of_offences";
+			return "log_of_offense";
 		}
 		
   		function getCaption()
@@ -65,16 +65,16 @@
 		{
 			
 			if($name == "str_type_of_offense")
-				return createTagSelect("select id,type from type_of_offense", "type", $name, $value);
+				return $this->createTagSelect("select id,type from type_of_offense", "type", $name, $value);
 			if($name == "fio_stsm")
-				return createTagSelect("select id,fio from personal where stsm = 1", "fio", $name, $value);
+				return $this->createTagSelect("select id, fio from personal where stsm = 1", "fio", $name, $value);
 			if($name == "fio_personal")
-				return createTagSelect("select id,fio from personal where stsm <> 1", "fio", $name, $value);
+				return $this->createTagSelect("select id, fio from personal where stsm <> 1", "fio", $name, $value);
 			else if($name == "text")
-				return "<textarea name='$name' cols='40' rows='3'>$value<textarea><br>";
+				return "<textarea name='$name' cols='40' rows='3'>$value</textarea><br>";
 			else if($name == "scan")
-				return "<input type='file' name='$name'>$value<textarea><br>";
-			else 
+				return "<input type='file' name='$name' value=''><br>";
+			else
 				return "I don't know, what are you want!";
 		}
 		
@@ -86,10 +86,12 @@
 			$id_personal = $_POST['fio_personal'];
 			$text = htmlspecialchars($_POST['text']);
 			
-			$query = "insert into log_of_offences(
+			$query = "insert into log_of_offenses(
 				date, id_type_of_offense, id_stsm, id_personal, text, scan
 			)
 				values(NOW(), $id_type_of_offense, $id_stsm, $id_personal, '$text', '')";
+			//echo $query;
+			//exit(0);
 			$result = mysql_query( $query ) or die("cann't insert");
 		}
 	  
@@ -97,7 +99,7 @@
 		{
 			$arr = $this->getColumns();
 			$arr['Текст'] = 'text';
-			$arr['Скан документа:'] = 'scan';
+			// $arr['Скан документа:'] = 'scan';
 			unset($arr['id']);
 			return $arr;
 		}

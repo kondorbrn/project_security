@@ -18,7 +18,7 @@
    
       $query = $obj->createSQL($find)." ORDER BY t0.id DESC LIMIT $start_record,$end_record;";
       
-      // echo $query;
+		echo "<!-- ".$query." -->";
       $result = mysql_query( $query );
       
       $color = "";
@@ -75,19 +75,20 @@
    
    function echo_addform($obj, $find)
    {
-   	
+  	
    	$arr = $obj->getColumns_Insert();
-   	
+  	
    	echo "<br/><hr/><br/>
       <form action='index.php?".$obj->getName()."=&insert=&find=".$find."' name='insert_".$obj->getName()."' method='POST' enctype='multipart/form-data'>
       <input type='hidden' name='".$name."' value=''/>
       <table width='50%'>";
+      // var_dump($arr);
       
       foreach ($arr as $caption => $name) {
       	echo "
-	      <tr>
+	      <tr> 
 		      <td align='right' width=50%>".$caption."</td>
-		      <td align='left' width=50%>".$obj->createInputTag($name, $value = "")."</td>
+		      <td align='left' width=50%>".$obj->createInputTag($name, "")."</td>
 	      </tr>
 	      	";           
          };      

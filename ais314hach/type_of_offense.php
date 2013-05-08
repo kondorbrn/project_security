@@ -18,7 +18,7 @@
 		
   		function getCaption()
 		{
-			return "Type of Offenses";
+			return "Types of Offense";
 		}
 		
       function getColumns()
