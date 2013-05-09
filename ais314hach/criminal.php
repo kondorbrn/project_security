@@ -11,16 +11,26 @@
          return "select ".$fields." from criminal t0 where fio like '%%".$find."%%'";    
       }
 
+		function createSQL_View($id)
+		{
+			return "select * from criminal t0 where id = $id";
+		}
+		
 		function getName()
 		{
 			return "criminal";
 		}
 		
      	function getCaption()
-		  {
+		{
         return "Criminals";
   		}
-     
+
+		function echo_view_extended($id)
+		{
+		
+		}
+		
       function getColumns()
       {
          $arr = array();
@@ -38,6 +48,11 @@
       	return $arr;
       }
       
+      function getColumns_View()
+		{
+			return $this->getColumns();
+		}
+		
       function createInputTag($name, $value = "")
 		{
 			if($name == "fio" || $name == "snp")
@@ -51,8 +66,6 @@
 		
       function insert()
       {
-      	//$db = mysql_connect( $db_host, $db_username, $db_userpass);
-	   	//mysql_select_db( $db_namedb, $db);
    	   mysql_set_charset("utf8");
       
 			$fio = $_POST['fio'];
@@ -64,10 +77,19 @@
 			$result = mysql_query( $query ) or die("cann't insert");		
       }
       
+      function delete($id)
+		{
+			mysql_set_charset("utf8");
+			$query = "delete from criminal where id = $id";
+			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
+		}
+		
       function convertToPrintData($name, $data)
       {
-         if($name == "fof")
-            return ($data == 0 ? "Нет" : "Да" ); 
+      	if($name == 'fio')
+				return "<img src='images/1367971172_user.png' height=20px/>".$data;				
+         else if($name == "fof")
+            return ($data == 0 ? "Нет" : "<img src='images/1367971099_notification_warning.png' height=20px/> Да" ); 
  
          return $data;
       }

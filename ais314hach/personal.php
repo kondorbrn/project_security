@@ -9,6 +9,11 @@
 			$fields = "COUNT(*) as count_rec";
 			return "select ".$fields." from personal t0 where fio like '%%".$find."%%'";
 		}
+		
+		function createSQL_View($id)
+		{
+			return "select * from personal t0 where id = $id";
+		}
       
 		function getCaption()
 		{
@@ -45,7 +50,17 @@
 			unset($arr['id']);
 			return $arr;
 		}
-      
+
+		function echo_view_extended($id)
+		{
+			
+		}
+		
+      function getColumns_View()
+		{
+			return $this->getColumns();
+		}
+		
       function insert()
       {
 			mysql_set_charset("utf8");
@@ -57,9 +72,18 @@
 			$result = mysql_query( $query ) or die("cann't insert");
       }
 
+		function delete($id)
+		{
+			mysql_set_charset("utf8");
+			$query = "delete from personal where id = $id";
+			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
+		}
+		
 		function convertToPrintData($name, $data)
 		{
-			if($name == 'stsm')
+			if($name == 'fio')
+				return "<img src='images/1367971172_user.png' height=20px/>".$data;
+			else if($name == 'stsm')
 				return ($data == 0 ? 'Нет' : 'Да');
 			return $data;
 		}

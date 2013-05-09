@@ -11,6 +11,11 @@
          return "select ".$fields." from type_of_offense t0 where type like '%%".$find."%%'";    
       }
 
+		function createSQL_View($id)
+		{
+			return "select * from type_of_offense t0 where id = $id";
+		}
+		
 		function getName()
 		{
 			return "type_of_offense";
@@ -29,6 +34,16 @@
          return $arr;
       }
       
+      function echo_view_extended($id)
+		{
+		
+		}
+		
+		function getColumns_View()
+		{
+			return $this->getColumns();
+		}
+		
       function getColumns_Insert()
       {
       	$arr = $this->getColumns();
@@ -54,6 +69,13 @@
 			$query = "insert into type_of_offense(type) values('$type')";
 			$result = mysql_query( $query ) or die("cann't insert");;		
       }
+      
+		function delete($id)
+		{
+			mysql_set_charset("utf8");
+			$query = "delete from type_of_offense where id = $id";
+			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
+		}
       
       function convertToPrintData($name, $data)
       {

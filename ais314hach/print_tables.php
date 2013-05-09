@@ -103,9 +103,53 @@
       </form>";
    }
    
-   function echo_record($obj, $find, $page)
-   {
+   
+   function echo_view($obj, $id)
+   {      
+      $db = mysql_connect( $db_host, $db_username, $db_userpass);
+   	mysql_select_db( $db_namedb, $db);
+      mysql_set_charset("utf8");
+      	      
+		$query = $obj->createSQL_View($id);
+		echo "<!-- ".$query." -->";
+				
+      $result = mysql_query( $query ) or die("incorret sql query = ".$query);
+		  
+		$rows = mysql_num_rows($result);
+		if($rows == 0)
+		{
+			echo "Not found record in database<br>";
+			return;
+		}
+		if($rows > 1)
+		{
+			echo "It found very more rows that one.<br>";
+			return;
+		}
+		$arr = $obj->getColumns_View();
+		  
+		echo "<a onClick=\"ConfirmDelete('"."index.php?".$obj->getName()."=&delete=$id"."');\"><img src='images/1367970998_file_delete.png' width=20px/></a>
+				<a href='index.php?".$obj->getName()."=&edit=$id'><img src='images/1367971059_file_edit.png' width=20px/></a>
+		";
 		
+      echo "
+      <hr>      
+      <table cellspacing='0' cellpadding='10' >";      
+      foreach ($arr as $caption => $name) {
+	         
+	         $data = mysql_result($result, 0, $name);
+	         $data = $obj->convertToPrintData($name, $data);
+				echo "
+					<tr bgcolor='$color'>
+				   	<td>".$caption."</td>
+				   	<td>".$data."</td>
+				   </tr>";
+      };	     
+      echo "</table><br/><hr/>";
+      
+      
+      $obj->echo_view_extended();
+      
    }
    
    function echo_title_page($name = "")
