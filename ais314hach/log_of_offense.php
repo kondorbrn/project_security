@@ -118,12 +118,36 @@
 			$id_personal = $_POST['fio_personal'];
 			$date = htmlspecialchars($_POST['date']);
 			$text = htmlspecialchars($_POST['text']);
+			$scan = $_FILES["scan"]["name"];
+				
+			if( strlen($_FILES["scan"]["name"]) > 0 )
+			{
+				$filename = uniqid();
+			
+				$folder = substr($filename, 0, 2);
+											
+				if( !file_exists("scans/$folder"))
+					mkdir( "scans/$folder", 0777 );
+
+				$filename .= ".".pathinfo($_FILES['scan']['name'], PATHINFO_EXTENSION);
+				
+				// echo "filename = $filename <br>";
+								
+				$fileto = "scans/$folder/$filename";
+				// echo "fileto = $fileto <br>";
+				if( copy( $_FILES["scan"]["tmp_name"], $fileto ) )
+				{
+					$scan = $fileto;
+					// echo "scan = $scan <br>";					
+				};
+			};
+		
 			//echo "[".$date."]";
 			//exit();
 			$query = "insert into log_of_offenses(
 				`date`, id_type_of_offense, id_stsm, id_personal, text, scan
 			)
-				values('$date', $id_type_of_offense, $id_stsm, $id_personal, '$text', '')";
+				values('$date', $id_type_of_offense, $id_stsm, $id_personal, '$text', '$scan')";
 			//echo $query;
 			//exit(0);
 			$result = mysql_query( $query ) or die("cann't insert");
@@ -140,7 +164,7 @@
 		{
 			$arr = $this->getColumns();
 			$arr['<img src="images/1367971109_message.png" height=20px/> Текст'] = 'text';
-			// $arr['Скан документа:'] = 'scan';
+			$arr['Скан документа:'] = 'scan';
 			unset($arr['id']);
 			return $arr;
 		}
@@ -152,7 +176,7 @@
       	else if($name == 'fio_personal')
 				return "<img src='images/1367971172_user.png' height=20px/>".$data;				
          else if($name == "scan")
-            return "<img src='$data' width=50px />"; 
+            return "<img src='$data'/>"; 
 
          return $data;
       }
