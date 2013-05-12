@@ -25,7 +25,12 @@
 		{
         return "Criminals";
   		}
-
+		
+		function onClick_Table($id)
+      {
+      	return "document.location = 'index.php?".$this->getName()."=&view=".$id."';";
+      }
+      
 		function echo_view_extended($id)
 		{
 		

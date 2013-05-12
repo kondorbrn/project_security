@@ -40,6 +40,11 @@
 				return "I don't know, what are you want!";
 		}
 		
+		function onClick_Table($id)
+      {
+      	return "document.location = 'index.php?".$this->getName()."=&view=".$id."';";
+      }
+      
 		function getColumns()
 		{
 			$arr = array();

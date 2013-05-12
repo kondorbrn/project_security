@@ -49,7 +49,12 @@
 		{
 			return "Log Of Offences";
 		}
-          
+
+		function onClick_Table($id)
+      {
+      	return "document.location = 'index.php?".$this->getName()."=&view=".$id."';";
+      }
+                
 		function getColumns()
 		{
 			$arr = array();
@@ -73,7 +78,11 @@
 		
 		function echo_view_extended($id)
 		{
-			echo "here it will insert and view table for criminals :) ";
+			include_once "participants_of_criminal.php";
+			// include_once "print_tables.php";
+			$new_obj = new participants_of_criminal($id);
+			echo_tabl($new_obj, $find, -1);
+			echo_addform($new_obj);
 		}
 		
 		function createTagSelect($query, $field, $name, $value)
@@ -124,6 +133,17 @@
 		
 		function insert()
 		{
+			if(isset( $_GET['participants_of_criminal']))
+			{
+				include_once "participants_of_criminal.php";
+				$id = $_POST['id_log_of_offenses']; 
+				$new_obj = new participants_of_criminal($id);
+				$new_obj->insert();
+				refreshTo("index.php?".$this->getName()."&view=".$id);
+				exit();
+			}
+			
+			
 			mysql_set_charset("utf8");
 			$id_type_of_offense = $_POST['str_type_of_offense'];
 			$id_stsm = $_POST['fio_stsm'];
@@ -167,6 +187,16 @@
 	  
 		function delete($id)
 		{
+			if(isset( $_GET['participants_of_criminal']))
+			{
+				include_once "participants_of_criminal.php";
+				$id_log = $_GET['id_log_of_offenses']; 
+				$new_obj = new participants_of_criminal($id_log);
+				$new_obj->delete($id);
+				refreshTo("index.php?".$this->getName()."&view=".$id_log);
+				exit();
+			}
+			
 			mysql_set_charset("utf8");
 			$query = "delete from log_of_offenses where id = $id";
 			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
