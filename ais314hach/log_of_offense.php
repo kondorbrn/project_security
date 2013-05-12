@@ -84,7 +84,7 @@
 			{
 				$id = mysql_result($result, $i, "id");
 				$type = mysql_result($result, $i, $field);
-				$checked = ($value == $id ? "checked" : "");
+				$checked = ($value == $type ? "selected" : "");
 				$ret .= "<option value=$id $checked>$type</option>";
 			};
       		$ret .= "</select>";
@@ -102,12 +102,24 @@
 				return $this->createTagSelect("select id, fio from personal where stsm <> 1", "fio", $name, $value);
 			else if($name == "text")
 				return "<textarea name='$name' cols='40' rows='3'>$value</textarea><br>";
-			else if($name == "scan")
-				return "<input type='file' name='$name' value=''><br>";
+			else if($name == "scan")			
+			{
+				$res = "<input type='file' name='$name' value=''/>";
+				if(strlen($value) > 0)
+				{
+					$res .= "<input type='hidden' name='val_$name' value='$value'/>";					
+					$res .= "<br/> <img src='$value'/> <br/>";
+				};
+				return $res;
+			}
 			else if($name == "date")
-				return "<input type='text' name='$name' id='datepicker' value=''/>";
+			{
+				return "<input type='text' name='$name' value='$value' id='datepicker'				
+				/> $value";
+								
+			}	
 			else
-				return "I don't know, what are you want!";
+				return "$value";
 		}
 		
 		function insert()
@@ -158,6 +170,53 @@
 			mysql_set_charset("utf8");
 			$query = "delete from log_of_offenses where id = $id";
 			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
+		}
+		
+		
+		function update($id)
+		{
+			mysql_set_charset("utf8");
+			$id_type_of_offense = $_POST['str_type_of_offense'];
+			$id_stsm = $_POST['fio_stsm'];
+			$id_personal = $_POST['fio_personal'];
+			$date = htmlspecialchars($_POST['date']);
+			$text = htmlspecialchars($_POST['text']);
+			$scan = htmlspecialchars($_POST['val_scan']);
+				
+			if( strlen($_FILES["scan"]["name"]) > 0 )
+			{
+				$filename = uniqid();
+			
+				$folder = substr($filename, 0, 2);
+											
+				if( !file_exists("scans/$folder"))
+					mkdir( "scans/$folder", 0777 );
+
+				$filename .= ".".pathinfo($_FILES['scan']['name'], PATHINFO_EXTENSION);
+				
+				// echo "filename = $filename <br>";
+								
+				$fileto = "scans/$folder/$filename";
+				// echo "fileto = $fileto <br>";
+				if( copy( $_FILES["scan"]["tmp_name"], $fileto ) )
+				{
+					$scan = $fileto;
+					// echo "scan = $scan <br>";					
+				};
+			};
+		
+			//echo "[".$date."]";
+			//exit();
+			$query = "update log_of_offenses
+				set 
+					`date` = '$date', 
+					id_type_of_offense = $id_type_of_offense, 
+					id_stsm = $id_stsm, 
+					id_personal = $id_personal, 
+					text = '$text', 
+					scan = '$scan'
+				where id = $id";
+			$result = mysql_query( $query ) or die("cann't update");
 		}
 		
 		function getColumns_Insert()

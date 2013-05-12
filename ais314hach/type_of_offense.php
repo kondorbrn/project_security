@@ -53,7 +53,9 @@
       
       function createInputTag($name, $value = "")
 		{
-			if($name == "type")
+			if($name == 'id')
+				return "<input type=hidden name='$name' value='$value'/>$value";
+			else if($name == "type")
 				return "<input type='text' name='$name' value='$value'/>";
 			else 
 				return "I don't know, what are you want!";
@@ -65,7 +67,7 @@
 	   	//mysql_select_db( $db_namedb, $db);
    	   mysql_set_charset("utf8");
       
-			$type = $_POST['type'];
+			$type = htmlspecialchars($_POST['type']);
 			$query = "insert into type_of_offense(type) values('$type')";
 			$result = mysql_query( $query ) or die("cann't insert");;		
       }
@@ -77,6 +79,15 @@
 			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
 		}
       
+      function update($id)
+		{
+			mysql_set_charset("utf8");
+      
+			$type = htmlspecialchars($_POST['type']);
+			$query = "update type_of_offense set type='$type' where id = $id";
+			$result = mysql_query( $query ) or die("cann't insert");
+		}
+		
       function convertToPrintData($name, $data)
       {
          return $data;

@@ -128,9 +128,22 @@
 		}
 		$arr = $obj->getColumns_View();
 		  
-		echo "<a onClick=\"ConfirmDelete('"."index.php?".$obj->getName()."=&delete=$id"."');\"><img src='images/1367970998_file_delete.png' width=20px/></a>
-				<a href='index.php?".$obj->getName()."=&edit=$id'><img src='images/1367971059_file_edit.png' width=20px/></a>
-		";
+		echo "
+		<table>
+			<tr>
+				<td>
+					<a href='index.php?".$obj->getName()."'><img src='images/1367972162_go-next-rtl.png' height=20px/></a> 
+				</td>
+				<td> | </td>
+				<td>
+					<a onClick=\"ConfirmDelete('"."index.php?".$obj->getName()."=&delete=$id"."');\"><img src='images/1367970998_file_delete.png' width=20px/></a> 
+				</td>
+				<td> | </td>				
+				<td>
+					<a href='index.php?".$obj->getName()."=&edit=$id'><img src='images/1367971059_file_edit.png' width=20px/></a>
+				</td>
+			</tr>
+		</table>";
 		
       echo "
       <hr>      
@@ -141,8 +154,8 @@
 	         $data = $obj->convertToPrintData($name, $data);
 				echo "
 					<tr bgcolor='$color'>
-				   	<td>".$caption."</td>
-				   	<td>".$data."</td>
+				   	<td valign='top'>".$caption."</td>
+				   	<td valign='top'>".$data."</td>
 				   </tr>";
       };	     
       echo "</table><br/><hr/>";
@@ -150,6 +163,62 @@
       
       $obj->echo_view_extended();
       
+   }
+   
+   function echo_edit($obj, $id)
+   {
+      $db = mysql_connect( $db_host, $db_username, $db_userpass);
+   	mysql_select_db( $db_namedb, $db);
+      mysql_set_charset("utf8");
+      	      
+		$query = $obj->createSQL_View($id);
+		echo "<!-- ".$query." -->";
+				
+      $result = mysql_query( $query ) or die("incorret sql query = ".$query);
+		  
+		$rows = mysql_num_rows($result);
+		if($rows == 0)
+		{
+			echo "Not found record in database<br>";
+			return;
+		}
+		if($rows > 1)
+		{
+			echo "It found very more rows that one.<br>";
+			return;
+		}
+		$arr = $obj->getColumns_View();
+		  
+		  
+		echo "
+		<table>
+			<tr>
+				<td>
+					<a href='index.php?".$obj->getName()."&view=$id'><img src='images/1367972162_go-next-rtl.png' height=20px/></a> 
+				</td>
+			</tr>
+		</table>";
+		
+      echo "
+      <hr>
+      <form action='index.php?".$obj->getName()."=&update=$id' id='update_' method='POST' enctype='multipart/form-data'>
+      
+      <table cellspacing='0' cellpadding='10' >";
+      foreach ($arr as $caption => $name) {
+	         
+	         $data = mysql_result($result, 0, $name);
+//	         $data = $obj->convertToPrintData($name, $data);
+				echo "
+					<tr bgcolor='$color'>
+				   	<td valign='top'>".$caption."</td>
+				   	<td valign='top'>".$obj->createInputTag($name, $data)."</td>
+				   </tr>";
+      };	     
+      echo "</table>
+      <input type='submit' value='Update'/>
+      </form>
+      <hr/>";
+      // $obj->echo_view_extended();   
    }
    
    function echo_title_page($name = "")

@@ -16,14 +16,6 @@
 <script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
 
 <script>
-$(function() {
-//	$( "#datepicker" ).formatDate(, new Date(2007, 1 - 1, 26));
-	$( "#datepicker" ).datepicker();
-	$( "#datepicker" ).datepicker( "option", "dateFormat", "yy-mm-dd 00:00:00" );
-}) ;
-</script>
-
-<script>
 function SetCaretAtEnd(elem) {
         var elemLen = elem.value.length;
         // For IE Only
@@ -114,6 +106,13 @@ function ConfirmDelete(url)
 		refreshTo("index.php?".$selected_obj->getName()."=");
 		exit(0);
 	}
+	
+	if( isset($_GET["update"]) )
+	{
+		$selected_obj->update($_GET["update"]);
+		refreshTo("index.php?".$selected_obj->getName()."=&view=".$_GET["update"]);
+		exit(0);
+	}
    
    if( isset($_GET["delete"]) )
 	{
@@ -122,11 +121,15 @@ function ConfirmDelete(url)
 		exit(0);
 	}
    
-   
 	if( isset($_GET["view"]) )
 	{
 		echo_title_page("Viewer");
 		echo_view($selected_obj, $_GET["view"]);
+	}	
+	else if( isset($_GET["edit"]) )
+	{
+		echo_title_page("Editor");
+		echo_edit($selected_obj, $_GET["edit"]);
 	}	
 	else
 	{	
@@ -136,5 +139,14 @@ function ConfirmDelete(url)
 	}
 ?>
 
+<script>
+$(document).ready(function(){
+	$( "#datepicker" ).datepicker();
+	var date = $( "#datepicker" ).val();
+	$( "#datepicker" ).datepicker( "option", "dateFormat", "yy-mm-dd 00:00:00" );
+	$( "#datepicker" ).datepicker( "setDate", date );
+	$( "#datepicker").datepicker("refresh");  
+});
+</script>
 </body>
 </html>

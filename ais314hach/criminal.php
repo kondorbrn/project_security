@@ -55,10 +55,15 @@
 		
       function createInputTag($name, $value = "")
 		{
-			if($name == "fio" || $name == "snp")
+			if($name == 'id')
+				return "<input type=hidden name='$name' value='$value'/>$value";
+			else if($name == "fio" || $name == "snp")
 				return "<input type='text' name='$name' value='$value'/>";
 			else if($name == "fof")
-				return "<input type='checkbox' name='$name'/><br>";
+			{
+				$checked = ($value== '1' ? "checked" : "");
+				return "<input type='checkbox' name='$name' $checked/><br>";
+			}
 			else
 				return "I don't know, what are you want!";
 
@@ -82,6 +87,19 @@
 			mysql_set_charset("utf8");
 			$query = "delete from criminal where id = $id";
 			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
+		}
+		
+		function update($id)
+		{
+			mysql_set_charset("utf8");
+      	
+      	$fio = htmlspecialchars($_POST['fio']);
+			$fof = htmlspecialchars($_POST['fof']);
+			$snp = $_POST['snp'];
+			$fof = ($fof == "on" ? 1 : 0);
+			
+			$query = "update criminal set fio = '$fio', fof = $fof, snp = $snp where id = $id";
+			$result = mysql_query( $query ) or die("cann't insert");
 		}
 		
       function convertToPrintData($name, $data)
