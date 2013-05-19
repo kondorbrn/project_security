@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## removing old data
-mv -rf project_security project_security_backup
+mv -fu project_security project_security_backup
 
 rm -rf project_security
 mkdir  project_security
@@ -22,5 +22,4 @@ else
 fi
 
 ## restore scans
-mv -rf project_security_backup/scans project_security/scans
-rm -rf project_security_backup
+mv -f project_security_backup/scans/* project_security/scans/
