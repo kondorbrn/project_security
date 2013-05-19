@@ -23,7 +23,7 @@
 		
   		function getCaption()
 		{
-			return "Types of Offense_ ";
+			return "Types of Offense";
 		}
 		
 		function onClick_Table($id)
