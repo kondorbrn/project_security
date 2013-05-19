@@ -1,6 +1,8 @@
 #!/bin/bash
 
 ## removing old data
+mv -rf project_security project_security_backup
+
 rm -rf project_security
 mkdir  project_security
 
@@ -18,3 +20,7 @@ if [ -f config.php ]; then
 else
 	cp project_security/config.php config.php
 fi
+
+## restore scans
+mv -rf project_security_backup/scans project_security/scans
+rm -rf project_security_backup
