@@ -1,7 +1,15 @@
 #!/bin/bash
 
 ## removing old data
-mv -fu project_security project_security_backup
+if [ ! -d project_security_backup ];
+then
+	mkdir project_security_backup
+fi
+
+if [ -d project_security ];
+then
+	cp -rf project_security/* project_security_backup
+fi
 
 rm -rf project_security
 mkdir  project_security
@@ -12,7 +20,7 @@ FILE1=$(echo "$(pwd)/$1/ais314hach/*");
 cp -rf $FILE1 project_security
 
 ## configure
-chmod 777 -R project_security/*
+# chmod 777 -R project_security/*
 
 #copy config file if exists
 if [ -f config.php ]; then
@@ -22,4 +30,11 @@ else
 fi
 
 ## restore scans
-mv -f project_security_backup/scans/* project_security/scans/
+if [ -d project_security -a -d project_security_backup/scans ];
+then
+	rm -rf project_security/scans
+	cp -rf project_security_backup/scans project_security/scans
+fi
+
+## changes access to files
+chmod 777 -R project_security/*
