@@ -1,5 +1,6 @@
 <? error_reporting(E_ALL); ?>
 <?	
+	include_once "config.php";
    class log_of_offense
    {
       function createSQL($find, $count = false)
@@ -47,7 +48,7 @@
 		
   		function getCaption()
 		{
-			return "Log Of Offences";
+			return LOG_OF_OFFENSES;
 		}
 
 		function onClick_Table($id)
@@ -58,11 +59,11 @@
 		function getColumns()
 		{
 			$arr = array();
-			$arr['id'] = 'id';
-			$arr['Дата нарушения'] = 'date';			
-			$arr['Тип нарушения'] = 'str_type_of_offense';
-			$arr['Старший смены'] = 'fio_stsm';
-			$arr['Охраник'] = 'fio_personal';         
+			$arr[IDENTIFICATOR] = 'id';
+			$arr[DATE_OF_VIOLATION] = 'date';			
+			$arr[TYPE_OF_OFFENSE] = 'str_type_of_offense';
+			$arr[THE_SENIOR_PERSON_ON_DUTY] = 'fio_stsm';
+			$arr[SECURITY_GUARD] = 'fio_personal';         
 			// $arr['Текст'] = 'text';
 			// $arr['Скан документа:'] = 'scan';
 			return $arr;
@@ -71,8 +72,8 @@
 		function getColumns_View()
 		{
 			$arr = $this->getColumns();
-			$arr['<img src="images/1367971109_message.png" height=20px/> Текст'] = 'text';
-			$arr['Скан документа'] = 'scan';
+			$arr['<img src="images/1367971109_message.png" height=20px/>'.TEXT_DESCR] = 'text';
+			$arr[SCAN_OF_DOCUMENT] = 'scan';
 			return $arr;
 		}
 		
@@ -182,7 +183,7 @@
 				values('$date', $id_type_of_offense, $id_stsm, $id_personal, '$text', '$scan')";
 			//echo $query;
 			//exit(0);
-			$result = mysql_query( $query ) or die("cann't insert");
+			$result = mysql_query( $query ) or die(CAN_NOT_INSERT.", query = [".$query."]");
 		}
 	  
 		function delete($id)
@@ -199,7 +200,7 @@
 			
 			mysql_set_charset("utf8");
 			$query = "delete from log_of_offenses where id = $id";
-			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
+			$result = mysql_query( $query ) or die(CAN_NOT_DELETE.", query = [".$query."]");
 		}
 		
 		
@@ -246,15 +247,15 @@
 					text = '$text', 
 					scan = '$scan'
 				where id = $id";
-			$result = mysql_query( $query ) or die("cann't update");
+			$result = mysql_query( $query ) or die(CAN_NOT_UPDATE.", query = [".$query."]");
 		}
 		
 		function getColumns_Insert()
 		{
-			$arr = $this->getColumns();
-			$arr['<img src="images/1367971109_message.png" height=20px/> Текст'] = 'text';
-			$arr['Скан документа:'] = 'scan';
-			unset($arr['id']);
+			$arr = $this->getColumns();		
+			$arr["<img src='images/1367971109_message.png' height=20px/> ".TEXT_DESCR] = 'text';
+			$arr[SCAN_OF_DOCUMENT] = 'scan';
+			unset($arr[IDENTIFICATOR]);
 			return $arr;
 		}
 		

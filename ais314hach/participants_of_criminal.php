@@ -48,16 +48,16 @@
 		
   		function getCaption()
 		{
-			return "Participants of Criminal";
+			return PARTICIPANTS_OF_CRIMINAL;
 		}
           
 		function getColumns()
 		{
 			$arr = array();
-			$arr['id'] = 'id';
-			$arr['Нарушитель'] = 'fio_criminal';
-			$arr['Свой'] = 'fof_criminal';
-			$arr['Решение'] = 'resolution';
+			$arr[IDENTIFICATOR] = 'id';
+			$arr[CRIMINAL] = 'fio_criminal';
+			$arr[OURS] = 'fof_criminal';
+			$arr[RESOLUTION] = 'resolution';
 			return $arr;
 		}
 		
@@ -72,9 +72,9 @@
 		{
 			$arr = $this->getColumns();
 			// $arr['Запись в журнале'] = 'id_log_of_offenses';
-			unset($arr['id']);
-			unset($arr['Свой']);
-			unset($arr['Решение']);
+			unset($arr[IDENTIFICATOR]);
+			unset($arr[OURS]);
+			unset($arr[RESOLUTION]);
 			return $arr;
 		}
 		
@@ -115,14 +115,14 @@
 				id_log_of_offenses, id_criminal
 			)
 				values(".$this->id_log_of_offenses.", $id_criminal)";
-			$result = mysql_query( $query ) or die("cann't insert");
+			$result = mysql_query( $query ) or die(CAN_NOT_INSERT.", query = [".$query."]");
 		}
 	  
 		function delete($id)
 		{
 			mysql_set_charset("utf8");
 			$query = "delete from participants_of_criminal where id = $id";
-			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
+			$result = mysql_query( $query ) or die(CAN_NOT_DELETE.", query = [".$query."]");
 		}
 		
 		

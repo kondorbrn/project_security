@@ -23,7 +23,7 @@
 		
      	function getCaption()
 		{
-        return "Criminals";
+        return CRIMINALS;
   		}
 		
 		function onClick_Table($id)
@@ -39,17 +39,17 @@
       function getColumns()
       {
          $arr = array();
-         $arr['id'] = 'id';
-         $arr['Ф.И.О.'] = 'fio';
-         $arr['Свой'] = 'fof';
-         $arr['Серия и номер паспорта'] = 'snp';
+         $arr[IDENTIFICATOR] = 'id';
+         $arr[FULL_NAME] = 'fio';
+         $arr[OURS] = 'fof';
+         $arr[PASSPORT_NUMBER] = 'snp';
          return $arr;
       }
       
       function getColumns_Insert()
       {
       	$arr = $this->getColumns();
-      	unset($arr['id']);
+      	unset($arr[IDENTIFICATOR]);
       	return $arr;
       }
       
@@ -70,7 +70,7 @@
 				return "<input type='checkbox' name='$name' $checked/><br>";
 			}
 			else
-				return "I don't know, what are you want!";
+				return I_DONT_KNOW_WHAT_ARE_YOU_WHAT;
 
 		}
 		
@@ -84,14 +84,14 @@
 			$fof = ($fof == "on" ? 1 : 0);
 			
 			$query = "insert into criminal(fio,fof,snp) values('$fio', $fof, $snp)";
-			$result = mysql_query( $query ) or die("cann't insert");		
+			$result = mysql_query( $query ) or die(CAN_NOT_INSERT.", query = [".$query."]");
       }
       
       function delete($id)
 		{
 			mysql_set_charset("utf8");
 			$query = "delete from criminal where id = $id";
-			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
+			$result = mysql_query( $query ) or die(CAN_NOT_DELETE.", query = [".$query."]");
 		}
 		
 		function update($id)
@@ -104,7 +104,7 @@
 			$fof = ($fof == "on" ? 1 : 0);
 			
 			$query = "update criminal set fio = '$fio', fof = $fof, snp = $snp where id = $id";
-			$result = mysql_query( $query ) or die("cann't insert");
+			$result = mysql_query( $query ) or die(CAN_NOT_UPDATE.", query = [".$query."]");
 		}
 		
       function convertToPrintData($name, $data)
@@ -112,7 +112,7 @@
       	if($name == 'fio')
 				return "<img src='images/1367971172_user.png' height=20px/>".$data;				
          else if($name == "fof")
-            return ($data == 0 ? "Нет" : "<img src='images/1367971099_notification_warning.png' height=20px/> Да" ); 
+            return ($data == 0 ? NO : "<img src='images/1367971099_notification_warning.png' height=20px/>".YES ); 
  
          return $data;
       }

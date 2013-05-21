@@ -1,4 +1,9 @@
 <? error_reporting(E_ALL); ?>
+<?
+	include_once "basepage.php";
+	include_once "config.php";
+?>
+
 <html>
 <head>
 <title> Project Security </title>
@@ -38,10 +43,11 @@ function SetCaretAtEnd(elem) {
         } // if
     } // SetCaretAtEnd()
     
-    
+  
 function ConfirmDelete(url)
 {
-	  if(confirm("Are you sure, that are you want remove record?"))
+	
+	  if(confirm("<?php echo ARE_YOU_SURE_REMOVE_RECORD; ?>"))
 		  	document.location = url;
 }
     
@@ -54,8 +60,6 @@ function ConfirmDelete(url)
 <center>
 
 <?
-	include_once "basepage.php";
-	include_once "config.php";
 	include_once "bbcode.php";
 	include_once "print_tables.php";
 	include_once "create_objects.php";
@@ -76,7 +80,7 @@ function ConfirmDelete(url)
 
    if(count($objs) == 0)
    {
-   	echo "sorry, not found pages...";
+   	echo SORRY_NOT_FOUND_PAGES;
    	exit(0);
    };
 
@@ -123,12 +127,12 @@ function ConfirmDelete(url)
    
 	if( isset($_GET["view"]) )
 	{
-		echo_title_page("Viewer");
+		echo_title_page(VIEWER);
 		echo_view($selected_obj, $_GET["view"]);
 	}	
 	else if( isset($_GET["edit"]) )
 	{
-		echo_title_page("Editor");
+		echo_title_page(EDITOR);
 		echo_edit($selected_obj, $_GET["edit"]);
 	}	
 	else

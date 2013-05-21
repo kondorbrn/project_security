@@ -36,7 +36,7 @@
      	
 			echo "
 			<hr>
-			found ($count_all); pages:
+			".FOUND." ($count_all); ".PAGES.":
 			";
 
 			$count_pages = $count_all / 10;
@@ -84,7 +84,7 @@
       echo "</table><br/>";
 
       if($count_all == 0 )
-			echo "Not found records<br><br>";
+			echo NOT_FOUND_RECORDS."<br><br>";
    }
    
    function echo_addform($obj, $find)
@@ -110,7 +110,7 @@
      
       echo "	      
 	      <tr>
-		      <td colspan=2><br><center><input type='submit' value='Insert'/></center></td>
+		      <td colspan=2><br><center><input type='submit' value='".INSERT_RECORD."'/></center></td>
 	      </tr>	      
 
       </table>
@@ -127,17 +127,18 @@
 		$query = $obj->createSQL_View($id);
 		echo "<!-- ".$query." -->";
 				
-      $result = mysql_query( $query ) or die("incorret sql query = ".$query);
+      $result = mysql_query( $query ) or die(INCORRECT_SQL_QUERY." = [".$query."]");
 		  
+		$back = "<a href='index.php?".$obj->getName()."'><img src='images/1367972162_go-next-rtl.png' height=20px/></a>";
 		$rows = mysql_num_rows($result);
 		if($rows == 0)
 		{
-			echo "Not found record in database<br>";
+			echo NOT_FOUND_RECORD_IN_DATABASE."<br>".$back;
 			return;
 		}
 		if($rows > 1)
 		{
-			echo "It found very more rows that one.<br>";
+			echo FOUND_MORE_THAT_ONE."<br>".$back;
 			return;
 		}
 		$arr = $obj->getColumns_View();
@@ -146,7 +147,7 @@
 		<table>
 			<tr>
 				<td>
-					<a href='index.php?".$obj->getName()."'><img src='images/1367972162_go-next-rtl.png' height=20px/></a> 
+					".$back."
 				</td>
 				<td> | </td>
 				<td>
@@ -188,17 +189,17 @@
 		$query = $obj->createSQL_View($id);
 		echo "<!-- ".$query." -->";
 				
-      $result = mysql_query( $query ) or die("incorret sql query = ".$query);
+      $result = mysql_query( $query ) or die(INCORRECT_SQL_QUERY." = ".$query);
 		  
 		$rows = mysql_num_rows($result);
 		if($rows == 0)
 		{
-			echo "Not found record in database<br>";
+			echo NOT_FOUND_RECORDS_IN_DATABASE."<br>";
 			return;
 		}
 		if($rows > 1)
 		{
-			echo "It found very more rows that one.<br>";
+			echo FOUND_MORE_THAT_ONE."<br>";
 			return;
 		}
 		$arr = $obj->getColumns_View();
@@ -229,7 +230,7 @@
 				   </tr>";
       };	     
       echo "</table>
-      <input type='submit' value='Update'/>
+      <input type='submit' value='".UPDATE_DATA."'/>
       </form>
       <hr/>";
    }
@@ -246,7 +247,7 @@
    
    function echo_header($objs, $name, $find)
 	{	
-		echo_title_page("Search");
+		echo_title_page(SEARCH);
 	   echo "| ";	   
 	   foreach ($objs as $name1 => $obj)
 		{
@@ -263,9 +264,9 @@
       <input type='hidden' name='".$name."' value=''/>
       <table>
 	      <tr>
-		      <td>Find:</td>
+		      <td>".FIND.":</td>
 		      <td><input type='text' name='find' value='$find' size=100/></td>
-		      <td><input type='submit' value='FIND'/></td>
+		      <td><input type='submit' value='".FIND."'/></td>
 	      </tr>
 
       </table>

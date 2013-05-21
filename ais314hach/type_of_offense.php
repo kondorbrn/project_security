@@ -23,7 +23,7 @@
 		
   		function getCaption()
 		{
-			return "Types of Offense";
+			return TYPES_OF_OFFENSE;
 		}
 		
 		function onClick_Table($id)
@@ -34,8 +34,8 @@
       function getColumns()
       {
          $arr = array();
-         $arr['id'] = 'id';
-         $arr['Тип'] = 'type';
+         $arr[IDENTIFICATOR] = 'id';
+         $arr[TYPE] = 'type';
          return $arr;
       }
       
@@ -52,7 +52,7 @@
       function getColumns_Insert()
       {
       	$arr = $this->getColumns();
-      	unset($arr['id']);
+      	unset($arr[IDENTIFICATOR]);
       	return $arr;
       }
       
@@ -63,7 +63,7 @@
 			else if($name == "type")
 				return "<input type='text' name='$name' value='$value'/>";
 			else 
-				return "I don't know, what are you want!";
+				return I_DONT_KNOW_WHAT_ARE_YOU_WHAT;
 		}
 		
       function insert()
@@ -74,14 +74,14 @@
       
 			$type = htmlspecialchars($_POST['type']);
 			$query = "insert into type_of_offense(type) values('$type')";
-			$result = mysql_query( $query ) or die("cann't insert");;		
+			$result = mysql_query( $query ) or die(CAN_NOT_INSERT.", query = [".$query."]");		
       }
       
 		function delete($id)
 		{
 			mysql_set_charset("utf8");
 			$query = "delete from type_of_offense where id = $id";
-			$result = mysql_query( $query ) or die("cann't delete, query = ".$query);
+			$result = mysql_query( $query ) or die(CAN_NOT_DELETE.", query = [".$query."]");
 		}
       
       function update($id)
@@ -90,7 +90,7 @@
       
 			$type = htmlspecialchars($_POST['type']);
 			$query = "update type_of_offense set type='$type' where id = $id";
-			$result = mysql_query( $query ) or die("cann't insert");
+			$result = mysql_query( $query ) or die(CAN_NOT_UPDATE.", query = [".$query."]");
 		}
 		
       function convertToPrintData($name, $data)
