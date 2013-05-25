@@ -15,7 +15,7 @@ rm -rf project_security
 mkdir  project_security
 
 ## coping new data
-FILE1=$(echo "$(pwd)/$1/ais314hach/*");
+FILE1=$(echo "$(pwd)/$1/php/*");
 
 cp -rf $FILE1 project_security
 
