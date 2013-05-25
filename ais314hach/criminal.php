@@ -4,11 +4,16 @@
    {
       function createSQL($find, $count = false)
       {
+      	$find = htmlspecialchars($find);
 		   $fields = "*";
 		   if($count)
 			   $fields = "COUNT(*) as count_rec";
-
-         return "select ".$fields." from criminal t0 where fio like '%%".$find."%%'";    
+				
+         return "select ".$fields." from criminal t0 where 
+         	fio like '%%".$find."%%'
+         	or passport_country like '%%".$find."%%'
+         	or passport_seria like '%%".$find."%%'
+         	or passport_number like '%%".$find."%%'";
       }
 
 		function createSQL_View($id)
@@ -42,7 +47,9 @@
          $arr[IDENTIFICATOR] = 'id';
          $arr[FULL_NAME] = 'fio';
          $arr[OURS] = 'fof';
-         $arr[PASSPORT_NUMBER] = 'snp';
+         $arr[PASSPORT_COUNTRY] = 'passport_country';
+         $arr[PASSPORT_SERIA] = 'passport_seria';
+         $arr[PASSPORT_NUMBER] = 'passport_number';
          return $arr;
       }
       
@@ -62,8 +69,17 @@
 		{
 			if($name == 'id')
 				return "<input type=hidden name='$name' value='$value'/>$value";
-			else if($name == "fio" || $name == "snp")
+			else if(
+				$name == "fio" 
+				|| $name == "passport_seria" 
+				|| $name == "passport_number" 
+			)
 				return "<input type='text' name='$name' value='$value'/>";
+			else if($name == "passport_country" )
+			{
+				if($value == "") $value = DEFAULT_PASSPORT_COUNTRY;
+				return "<input type='text' name='$name' value='$value'/>";
+			}
 			else if($name == "fof")
 			{
 				$checked = ($value== '1' ? "checked" : "");
@@ -78,12 +94,14 @@
       {
    	   mysql_set_charset("utf8");
       
-			$fio = $_POST['fio'];
-			$fof = $_POST['fof'];
-			$snp = $_POST['snp'];
+			$fio = htmlspecialchars($_POST['fio']);
+			$fof = htmlspecialchars($_POST['fof']);
+			$passport_country = htmlspecialchars($_POST['passport_country']);
+			$passport_seria = htmlspecialchars($_POST['passport_seria']);
+			$passport_number = htmlspecialchars($_POST['passport_number']);
 			$fof = ($fof == "on" ? 1 : 0);
 			
-			$query = "insert into criminal(fio,fof,snp) values('$fio', $fof, $snp)";
+			$query = "insert into criminal(fio,fof,passport_country,passport_seria,passport_number) values('$fio', $fof, '$passport_country', '$passport_seria', '$passport_number')";
 			$result = mysql_query( $query ) or die(CAN_NOT_INSERT.", query = [".$query."]");
       }
       
@@ -100,10 +118,18 @@
       	
       	$fio = htmlspecialchars($_POST['fio']);
 			$fof = htmlspecialchars($_POST['fof']);
-			$snp = $_POST['snp'];
+			$passport_country = htmlspecialchars($_POST['passport_country']);
+			$passport_seria = htmlspecialchars($_POST['passport_seria']);
+			$passport_number = htmlspecialchars($_POST['passport_number']);
 			$fof = ($fof == "on" ? 1 : 0);
 			
-			$query = "update criminal set fio = '$fio', fof = $fof, snp = $snp where id = $id";
+			$query = "update criminal 
+				set fio = '$fio', 
+				fof = $fof, 
+				passport_country = '$passport_country' ,
+				passport_seria = '$passport_seria' ,
+				passport_number = '$passport_number'
+			where id = $id";
 			$result = mysql_query( $query ) or die(CAN_NOT_UPDATE.", query = [".$query."]");
 		}
 		

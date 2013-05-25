@@ -6,4 +6,5 @@
 	$db_namedb = "project_security";	
 	
 	include_once "language_en.php";
+	// include_once "language_ru.php";
 ?>
