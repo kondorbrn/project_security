@@ -2,6 +2,11 @@
 <?	
    class participants_of_criminal
    {
+      function getType()
+      {
+         return "sqltable"; 
+      }
+      
    	function participants_of_criminal($id_log_of_offenses)
    	{
    		$this->id_log_of_offenses = $id_log_of_offenses;
@@ -74,7 +79,7 @@
 			// $arr['Запись в журнале'] = 'id_log_of_offenses';
 			unset($arr[IDENTIFICATOR]);
 			unset($arr[OURS]);
-			unset($arr[RESOLUTION]);
+			//unset($arr[RESOLUTION]);
 			return $arr;
 		}
 		
@@ -102,6 +107,8 @@
 					$this->createTagSelect("select id, fio from criminal", "fio", $name, $value) ."
 					<input type='hidden' name='id_log_of_offenses' value='".$this->id_log_of_offenses."'/>";
 			}
+			else if($name == "resolution")
+			   return "<textarea name='$name' cols='40' rows='3'>$value</textarea><br>";
 			else
 				return "$value";
 		}
@@ -110,11 +117,12 @@
 		{
 			mysql_set_charset("utf8");
 			$id_criminal = $_POST['fio_criminal'];
+			$resolution = $_POST['resolution'];
 			
 			$query = "insert into participants_of_criminal(
-				id_log_of_offenses, id_criminal
+				id_log_of_offenses, id_criminal, resolution
 			)
-				values(".$this->id_log_of_offenses.", $id_criminal)";
+				values(".$this->id_log_of_offenses.", $id_criminal, '$resolution')";
 			$result = mysql_query( $query ) or die(CAN_NOT_INSERT.", query = [".$query."]");
 		}
 	  

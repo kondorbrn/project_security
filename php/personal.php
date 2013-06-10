@@ -4,6 +4,11 @@
 	
    class personal
    {
+      function getType()
+      {
+         return "sqltable"; 
+      }
+      
 		function createSQL($find, $count = false)
 		{
 			$fields = "*";
@@ -107,7 +112,7 @@
 			if($name == 'fio')
 				return "<img src='images/1367971172_user.png' height=20px/>".$data;
 			else if($name == 'stsm')
-				return ($data == 0 ? YES : NO);
+				return ($data == 0 ? NO : YES);
 			return $data;
 		}
    }

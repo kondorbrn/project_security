@@ -44,5 +44,7 @@ define("FIND", "Find");
 define("INCORRECT_SQL_QUERY", "Incorrect sql query");
 define("NOT_FOUND_RECORD_IN_DATABASE", "Not found record in database");
 define("FOUND_MORE_THAT_ONE", "It found very more rows that one");
-
+define("REPORT_MONTH", "Report month");
+define("START_DATE", "Start date");
+define("END_DATE", "End date");
 ?>

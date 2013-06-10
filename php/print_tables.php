@@ -257,7 +257,10 @@
 			else
 				echo $obj->getCaption()." | ";
 		};
- 
+	};
+	
+	function echo_find($objs, $name, $find)
+	{
       echo "<br>
       <br>
       <form action='index.php' name='form_search' method='GET'>
@@ -271,5 +274,34 @@
 
       </table>
       </form>";
+	};
+	
+	function echo_filter($obj, $name, $page)
+	{
+	   $arr = $obj->getFilter();
+	   	
+	   echo "<br/><hr/><br/>
+      <form action='index.php? method='GET' enctype='multipart/form-data'>
+      <input type='hidden' name='".$obj->getName()."' value=''/>
+      <table width='50%'>";
+      
+      foreach ($arr as $caption => $name) {
+      
+         $value = "";
+         if(isset($_GET[$name]))
+            $value = $_GET[$name];
+      	echo "
+	      <tr> 
+		      <td align='right' width=50%>".$caption."</td>
+		      <td align='left' width=50%>".$obj->createInputTag($name, $value)."</td>
+	      </tr>
+	      	";           
+         };     
+      echo "</table>
+      
+      <input type='submit' name='' value='OK'/>
+      \r\n";
+	   
+	   return "";
 	};
 ?>

@@ -17,6 +17,9 @@
 		include_once "log_of_offense.php";
 		$objs["log_of_offense"] = new log_of_offense();
 		
+		include_once "report_month.php";
+		$objs["report_month"] = new report_month();
+		
 		return $objs;
 	}
 

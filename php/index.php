@@ -138,8 +138,18 @@ function ConfirmDelete(url)
 	else
 	{	
 		echo_header($objs, $selected_name, $find);
-		echo_tabl($selected_obj, $find, $page);
-		echo_addform($selected_obj);
+		
+		if($selected_obj->getType() == "sqltable")
+		{
+		   echo_find($objs, $selected_name, $find);
+		   echo_tabl($selected_obj, $find, $page);
+		   echo_addform($selected_obj);
+		}
+		else if($selected_obj->getType() == "report")
+		{
+		   echo_filter($selected_obj, $find, $page);
+		   $selected_obj->printPage();
+		}
 	}
 ?>
 
@@ -150,6 +160,12 @@ $(document).ready(function(){
 	$( "#datepicker" ).datepicker( "option", "dateFormat", "yy-mm-dd 00:00:00" );
 	$( "#datepicker" ).datepicker( "setDate", date );
 	$( "#datepicker").datepicker("refresh");  
+	
+	$( "#datepicker2" ).datepicker();
+	var date = $( "#datepicker2" ).val();
+	$( "#datepicker2" ).datepicker( "option", "dateFormat", "yy-mm-dd 00:00:00" );
+	$( "#datepicker2" ).datepicker( "setDate", date );
+	$( "#datepicker2").datepicker("refresh");  
 });
 </script>
 </body>

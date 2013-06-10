@@ -2,6 +2,11 @@
 <?	
    class type_of_offense
    {
+      function getType()
+      {
+         return "sqltable"; 
+      }
+      
       function createSQL($find, $count = false)
       {
 		   $fields = "*";

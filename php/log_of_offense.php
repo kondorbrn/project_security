@@ -3,6 +3,11 @@
 	include_once "config.php";
    class log_of_offense
    {
+      function getType()
+      {
+         return "sqltable"; 
+      }
+      
       function createSQL($find, $count = false)
       {
 		   $fields = "*";
@@ -112,7 +117,7 @@
 				return $this->createTagSelect("select id, fio from personal where stsm <> 1", "fio", $name, $value);
 			else if($name == "text")
 				return "<textarea name='$name' cols='40' rows='3'>$value</textarea><br>";
-			else if($name == "scan")			
+			else if($name == "scan")
 			{
 				$res = "<input type='file' name='$name' value=''/>";
 				if(strlen($value) > 0)

@@ -2,6 +2,11 @@
 <?	
    class criminal
    {
+      function getType()
+      {
+         return "sqltable"; 
+      }
+      
       function createSQL($find, $count = false)
       {
       	$find = htmlspecialchars($find);

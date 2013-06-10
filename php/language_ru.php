@@ -44,5 +44,8 @@ define("FIND", "Искать");
 define("INCORRECT_SQL_QUERY", "Неправильный sql запрос");
 define("NOT_FOUND_RECORD_IN_DATABASE", "Не найдена запись в базе данных");
 define("FOUND_MORE_THAT_ONE", "Найдена больше чем одна запись");
+define("REPORT_MONTH", "Месячный отчет");
+define("START_DATE", "Начальная дата");
+define("END_DATE", "Дата окончания");
 
 ?>
